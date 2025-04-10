@@ -7,7 +7,9 @@ Este sistema envia notificações automáticas para um canal no Discord sobre bo
 - Envio de notificações para bosses 30 e 5 minutos antes do nascimento
 - Envio de notificações para eventos 5 minutos antes da abertura
 - Suporte para eventos com horários fixos e recorrentes (usando expressões cron)
-- Mensagens formatadas no estilo pedido
+- Mensagens formatadas em embeds do Discord para melhor visualização
+- Imagens personalizadas para cada boss e evento
+- Indicadores visuais de tempo: emoji amarelo 🟡 para 30 minutos e vermelho 🔴 para 5 minutos
 - Configuração de timezone para Brasil (GMT-3)
 - Menção @everyone para chamar atenção de todos os membros
 
@@ -63,20 +65,27 @@ Os horários dos bosses e eventos podem ser configurados no arquivo `config.js`.
 #### Bosses
 Cada boss tem as seguintes propriedades:
 - `nome`: Nome do boss
-- `local`: Local onde o boss aparece
+- `local`: Mapa onde o boss aparece
 - `horarios`: Array com os horários de aparecimento no formato "HH:MM"
+- `imagem`: URL da imagem do boss que será exibida na notificação
 
 #### Eventos
 Os eventos podem ser configurados de duas formas:
 1. Com horários específicos:
    - `nome`: Nome do evento
-   - `local`: Local do evento
+   - `local`: Mapa do evento
    - `horarios`: Array com os horários de abertura no formato "HH:MM"
+   - `imagem`: URL da imagem do evento que será exibida na notificação
 
 2. Com expressões cron (para eventos recorrentes):
    - `nome`: Nome do evento
-   - `local`: Local do evento
+   - `local`: Mapa do evento
    - `expressao`: Expressão cron que define a recorrência do evento
+   - `imagem`: URL da imagem do evento que será exibida na notificação
+
+### Configuração de Imagens
+
+Para as imagens funcionarem corretamente, elas devem estar hospedadas em um servidor acessível publicamente. Recomendo usar o GitHub ou outro serviço de hospedagem de imagens. As URLs das imagens devem ser configuradas nos objetos de boss e evento em `config.js`.
 
 ## Como Executar
 
@@ -101,12 +110,18 @@ Para manter o sistema em execução 24/7, você pode usar:
   pm2 start pm2-setup.js
   
   # OU iniciar diretamente
-  pm2 start index.js --name "discord-boss-notifications"
+  pm2 start index.js --name "discord-boss-notifications" -> Use esse
+
+# Listar pm2 ativo
+  pm2 list
+
+# Monitorar pm2 ativo
+  pm2 monit
   
-  # Salvar configuração para reinicialização
+# Salvar configuração para reinicialização
   pm2 save
   
-  # Configurar para iniciar automaticamente após reinicialização do sistema
+ # Configurar para iniciar automaticamente após reinicialização do sistema
   pm2 startup
   ```
 
